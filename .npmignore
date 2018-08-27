@@ -1,0 +1,11 @@
+.editorconfig
+.git
+.gitignore
+.istanbul.yml
+coverage/
+dist/test/
+package-lock.json
+src/
+test/
+tsconfig.json
+tslint.json
