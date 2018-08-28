@@ -1,0 +1,87 @@
+{
+  "name": "@daisukeark/clova-conversation-model-assert",
+  "version": "1.0.0",
+  "description": "Test framework for Clova Extension Kit SDK for Node.js",
+  "main": "./dist/index.js",
+  "types": "./dist/types/index.d.ts",
+  "scripts": {
+    "build": "tsc && rollup -c rollup.config.ts",
+    "lint": "$(npm bin)/tslint --project .",
+    "release": "npm run build && npm publish --access public",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daisukeArk/clova-conversation-model-assert"
+  },
+  "keywords": [
+    "test",
+    "framework",
+    "clova",
+    "cek",
+    "clova extension kit",
+    "conversation",
+    "conversation model",
+    "assert",
+    "typescript"
+  ],
+  "author": "Daisuke Araki",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=6.10.3"
+  },
+  "bug": {
+    "url": "https://github.com/daisukeArk/clova-conversation-model-assert/issues"
+  },
+  "homepage": "https://github.com/daisukeArk/clova-conversation-model-assert#readme",
+  "peerDependencies": {
+    "@line/clova-cek-sdk-nodejs": "^1.0.x",
+    "jest": "^22.0.0"
+  },
+  "dependencies": {
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "@line/clova-cek-sdk-nodejs": "^1.1.0",
+    "@types/jest": "^22.0.0",
+    "@types/uuid": "^3.4.3",
+    "jest": "^22.4.4",
+    "rollup": "^0.56.3",
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-typescript2": "^0.11.1",
+    "ts-jest": "^22.0.0",
+    "ts-node": "^6.0.1",
+    "tslint": "^5.10.0",
+    "tslint-microsoft-contrib": "^5.0.3",
+    "typescript": "^2.8.1"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/samples/",
+      "/test/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 90,
+        "lines": 95,
+        "statements": 95
+      }
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "testEnvironment": "node",
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(ts|tsx|js)$",
+    "transform": {
+      "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    }
+  }
+}
