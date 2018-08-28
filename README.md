@@ -1,11 +1,20 @@
 # Test framework for LINE Clova Extension Kit SDK for Node.js
 
-CEK SDK for Node.jsのテストフレームワークです。
+Clova Extension Kit SDK for Node.jsのテストフレームワークです。
+このフレームワークでテストを実行するためには、`jest`のインストールが必要です。
 
 ## Install
 
+### Install @daisukeark/clova-conversation-model-assert
+
 ```bash
 npm install --save-dev @daisukeark/clova-conversation-model-assert
+```
+
+### Install jest
+
+```bash
+npm install --save-dev jest
 ```
 
 ## Samples
@@ -42,6 +51,12 @@ Conversation.init(condition)
   .equal('今日も一日頑張っていきましょう。')
   // 評価
   .end();
+```
+
+実行には以下のコマンドを実行してください。
+
+```bash
+$(npm bin)/jest
 ```
 
 ## Conversation Assert
