@@ -24,7 +24,7 @@ Conversation.init(condition)
   // 起動要求
   .launchRequest()
   // LaunchRequestの発話情報が完全一致するか評価します。
-  .equalPlain('ようこそ')
+  .equal('ようこそ')
   // セッション終了要求
   .sessionEndedRequest()
   // 評価
@@ -36,11 +36,11 @@ Conversation.init(condition)
   // インテント要求 HelloWorldIntent
   .requestIntent('HelloWorldIntent')
   // HelloWorldIntentの発話情報が完全一致するか評価します。
-  .equalPlain('こんにちは、元気ですか？')
+  .equal('こんにちは、元気ですか？')
   // インテント要求 Clova.YesIntent
   .requestIntent('Clova.YesIntent')
   // Clova.YesIntentの発話情報が完全一致するか評価します。
-  .equalPlain('今日も一日頑張っていきましょう。')
+  .equal('今日も一日頑張っていきましょう。')
   // 評価
   .end();
 ```
@@ -49,3 +49,4 @@ Conversation.init(condition)
 
 種類 | 概要 |
 :-- | :-- |
+equal | SimpleSpeechテキストが完全一致すること |
