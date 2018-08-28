@@ -11,9 +11,8 @@ npm install --save-dev @daisukeark/clova-conversation-model-assert
 ## Samples
 
 ```typescript
-import { Conversation } from '@daisukeark/clova-conversation-model-assert';
+import { Conversation, IConversationCondition, IRequestCondition } from '@daisukeark/clova-conversation-model-assert';
 import { clovaHandler } from '../samples/hello-world/clova-handler';
-import { IConversationCondition } from '../src/lib/conversation-condition';
 
 const condition: IConversationCondition = {
   handler: clovaHandler,

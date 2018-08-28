@@ -151,3 +151,8 @@ export class Conversation {
     };
   }
 }
+
+export {
+  IConversationCondition,
+  IRequestCondition
+};
