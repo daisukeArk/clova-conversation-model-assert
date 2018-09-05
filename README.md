@@ -51,6 +51,38 @@ Conversation.init(condition)
   .equal('今日も一日頑張っていきましょう。')
   // 評価
   .end();
+
+// SpeechList
+Conversation.init(condition)
+  .launchRequest()
+  .requestIntent('HelloWorldListIntent')
+  .equalList([
+    'こんにちは、元気ですか？',
+    'http://clova.line.me/sample.mp3'
+  ])
+  .end();
+
+// SpeechSet
+Conversation.init(condition)
+  .launchRequest()
+  .requestIntent('HelloWorldSetIntent')
+  .equalSetBrief('挨拶の種類')
+  .equalSetVerbose('挨拶には、おはようございます、こんにちは、こんばんは、があります。')
+  .end();
+
+// SpeechSet(SpeechList)
+Conversation.init(condition)
+  .launchRequest()
+  .requestIntent('HelloWorldSetVerboseListIntent')
+  .equalSetBrief('挨拶の種類')
+  .equalSetVerboseList([
+    '挨拶には、',
+    'おはようございます、',
+    'こんにちは、',
+    'こんばんは、',
+    'があります。'
+  ])
+  .end();
 ```
 
 実行には以下のコマンドを実行してください。
@@ -63,4 +95,8 @@ $(npm bin)/jest
 
 種類 | 概要 |
 :-- | :-- |
-equal | SimpleSpeechテキストが完全一致すること |
+equal | SimpleSpeech テキストが完全一致すること |
+equalList | SpeechList テキストが完全一致すること |
+equalSetBrief | SpeechSet Brief テキストが完全一致すること |
+equalSetVerbose | SpeechSet Verbose テキストが完全一致すること |
+equalSetVerboseList | SpeechSet Verbose(SpeechList) テキストが完全一致すること |
