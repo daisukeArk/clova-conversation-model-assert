@@ -1,8 +1,11 @@
 import * as CEK from '@line/clova-cek-sdk-nodejs';
 import * as Util from 'util';
-import UUID from 'uuid';
+import { assertSpeech } from './lib/assert-speech';
 import { IConversation } from './lib/conversation';
 import { IConversationCondition } from './lib/conversation-condition';
+import { AssertTypes } from './lib/enums/assert-types';
+import { SpeechTypes } from './lib/enums/speech-types';
+import { buildRequest } from './lib/request-builder';
 import { IRequestCondition } from './lib/request-condition';
 import { IRequestHistory } from './lib/request-history';
 
@@ -23,68 +26,6 @@ export class Conversation {
       sessionAttributes: {}
     });
 
-    //#region buildRequest
-    function buildRequest(
-      intentName: string,
-      previousResponse: CEK.Clova.ResponseBody,
-      reqCondition?: IRequestCondition
-    ): CEK.Clova.RequestBody {
-      let request: CEK.Clova.Request;
-
-      switch (intentName) {
-        case 'LaunchRequest':
-          request = {
-            type: 'LaunchRequest'
-          };
-          break;
-        case 'SessionEndedRequest':
-          request = {
-            type: 'SessionEndedRequest'
-          };
-          break;
-        default:
-          request = {
-            type: 'IntentRequest',
-            intent: {
-              name: intentName,
-              slots: reqCondition && reqCondition.intent.slots ? reqCondition.intent.slots : {}
-            }
-          };
-          break;
-      }
-
-      return {
-        version: '1.0',
-        session: {
-          new: false,
-          sessionAttributes: previousResponse.sessionAttributes ? previousResponse.sessionAttributes : {},
-          sessionId: UUID.v4(),
-          user: {
-            userId: appCondition.user ? appCondition.user.userId : UUID.v4()
-          }
-        },
-        context: {
-          System: {
-            application: {
-              applicationId: appCondition.extensionId ? appCondition.extensionId : ''
-            },
-            user: {
-              userId: appCondition.user ? appCondition.user.userId : UUID.v4(),
-              accessToken: appCondition.user && appCondition.user.accessToken ? appCondition.user.accessToken : ''
-            },
-            device: {
-              deviceId: appCondition.device ? appCondition.device.deviceId : UUID.v4(),
-              display: {
-                size: 'none'
-              }
-            }
-          }
-        },
-        request: request
-      };
-    }
-    //#endregion
-
     return {
       launchRequest(): IConversation {
         return this.requestIntent('LaunchRequest');
@@ -97,7 +38,7 @@ export class Conversation {
         const task = (currentIndex: number) => {
           promises = promises
             .then(async (previousResponse: CEK.Clova.ResponseBody): Promise<CEK.Clova.ResponseBody> => {
-              const requestBody = buildRequest(requestHistories[currentIndex].intentName, previousResponse, reqCondition);
+              const requestBody = buildRequest(appCondition, requestHistories[currentIndex].intentName, previousResponse, reqCondition);
               let responseBody: any;
 
               await appCondition.handler({ body: requestBody }, { json: (value: CEK.Clova.ResponseBody) => { responseBody = value; } });
@@ -108,7 +49,6 @@ export class Conversation {
               return responseBody;
             });
         };
-
         task(requestCounter);
 
         return this;
@@ -116,13 +56,47 @@ export class Conversation {
       sessionEndedRequest(): IConversation {
         return this.requestIntent('SessionEndedRequest');
       },
-      equal(expectedSpeech: string): IConversation {
+      equal(expectedValue: string): IConversation {
         requestHistories[requestCounter].tests.push({
-          description: `equal SimpleSpeech: ${expectedSpeech}`,
+          description: `equal SimpleSpeech: ${expectedValue}`,
           test: (history: IRequestHistory): void => {
-            if ((<any>history.response.response.outputSpeech).type === 'SimpleSpeech') {
-              expect((<any>history.response.response.outputSpeech).values.value).toBe(expectedSpeech);
-            }
+            assertSpeech(AssertTypes.Equal, SpeechTypes.SimpleSpeech, history, expectedValue);
+          }
+        });
+        return this;
+      },
+      equalList(expectedValues: string[]): IConversation {
+        requestHistories[requestCounter].tests.push({
+          description: `equal SpeechList: ${Util.inspect(expectedValues, { depth: null })}`,
+          test: (history: IRequestHistory): void => {
+            assertSpeech(AssertTypes.Equal, SpeechTypes.SpeechList, history, expectedValues);
+          }
+        });
+        return this;
+      },
+      equalSetBrief(expectedValue: string): IConversation {
+        requestHistories[requestCounter].tests.push({
+          description: `equal SpeechSet Brief: ${Util.inspect(expectedValue, { depth: null })}`,
+          test: (history: IRequestHistory): void => {
+            assertSpeech(AssertTypes.Equal, SpeechTypes.SpeechSetBrief, history, expectedValue);
+          }
+        });
+        return this;
+      },
+      equalSetVerbose(expectedValue: string): IConversation {
+        requestHistories[requestCounter].tests.push({
+          description: `equal SpeechSet Verbose: ${Util.inspect(expectedValue, { depth: null })}`,
+          test: (history: IRequestHistory): void => {
+            assertSpeech(AssertTypes.Equal, SpeechTypes.SpeechSetVerbose, history, expectedValue);
+          }
+        });
+        return this;
+      },
+      equalSetVerboseList(expectedValues: string[]): IConversation {
+        requestHistories[requestCounter].tests.push({
+          description: `equal SpeechSet VerboseList: ${Util.inspect(expectedValues, { depth: null })}`,
+          test: (history: IRequestHistory): void => {
+            assertSpeech(AssertTypes.Equal, SpeechTypes.SpeechSetVerboseList, history, expectedValues);
           }
         });
         return this;

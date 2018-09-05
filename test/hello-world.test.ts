@@ -23,6 +23,23 @@ Conversation.init(condition)
 
 Conversation.init(condition)
   .launchRequest()
+  .requestIntent(
+    'SlotIntent',
+    {
+      intent: {
+        slots: {
+          userName: {
+            name: 'userName',
+            value: '大輔'
+          }
+        }
+      }
+    })
+  .equal('大輔さん、こんにちは、元気ですか？')
+  .end();
+
+Conversation.init(condition)
+  .launchRequest()
   .requestIntent('HelloWorldIntent')
   .equal('こんにちは、元気ですか？')
   .requestIntent('Clova.NoIntent')
@@ -32,13 +49,30 @@ Conversation.init(condition)
 Conversation.init(condition)
   .launchRequest()
   .requestIntent('HelloWorldListIntent')
-  .equal('こんにちは、元気ですか？')
+  .equalList([
+    'こんにちは、元気ですか？',
+    'http://clova.line.me/sample.mp3'
+  ])
   .end();
 
 Conversation.init(condition)
   .launchRequest()
   .requestIntent('HelloWorldSetIntent')
-  .equal('こんにちは')
+  .equalSetBrief('挨拶の種類')
+  .equalSetVerbose('挨拶には、おはようございます、こんにちは、こんばんは、があります。')
+  .end();
+
+Conversation.init(condition)
+  .launchRequest()
+  .requestIntent('HelloWorldSetVerboseListIntent')
+  .equalSetBrief('挨拶の種類')
+  .equalSetVerboseList([
+    '挨拶には、',
+    'おはようございます、',
+    'こんにちは、',
+    'こんばんは、',
+    'があります。'
+  ])
   .end();
 
 Conversation.init(condition)
